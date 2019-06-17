@@ -9,7 +9,7 @@ let config = {
     // is drawn before every request. empty string for no sleeping.
     sleep_range: '',
     // which search engine to scrape
-    search_engine: 'baidu',
+    search_engine: 'google',
     // whether debug information should be printed
     // debug info is useful for developers when debugging
     debug: true,
@@ -17,20 +17,20 @@ let config = {
     // this output is informational
     verbose: true,
     // an array of keywords to scrape
-    keywords: ['cat', 'mouse'],
+    keywords: ['cat'],
     // alternatively you can specify a keyword_file. this overwrites the keywords array
     keyword_file: '',
     // the number of pages to scrape for each keyword
     num_pages: 1,
     // whether to start the browser in headless mode
-    headless: false,
+    headless: true,
     // specify flags passed to chrome here
     chrome_flags: [],
     // path to output file, data will be stored in JSON
-    output_file: 'examples/results/baidu.json',
+    output_file: 'examples/results/data.json',
     // whether to prevent images, css, fonts from being loaded
     // will speed up scraping a great deal
-    block_assets: false,
+    block_assets: true,
     // path to js module that extends functionality
     // this module should export the functions:
     // get_browser, handle_metadata, close_browser
@@ -61,17 +61,17 @@ let config = {
     }
 };
 
-function callback(err, response) {
-    if (err) { console.error(err) }
 
-    /* response object has the following properties:
+module.exports = {
+    run: function (callback) {
+        se_scraper.scrape(config, function(err, res) {
 
-        response.results - json object with the scraping results
-        response.metadata - json object with metadata information
-        response.statusCode - status code of the scraping process
-     */
+            if (err) {
+                console.error(err);
+            }
 
-    console.dir(response.results, {depth: null, colors: true});
-}
+            callback({"res": res.results, "meta": res.metadata, "status": res.statusCode});
 
-se_scraper.scrape(config, callback);
+        });
+    }
+};

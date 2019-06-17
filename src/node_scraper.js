@@ -109,6 +109,7 @@ module.exports.handler = async function handler (event, context, callback) {
         }
 
         let launch_args = {
+            executablePath: '/usr/bin/chromium-browser',
             args: chrome_flags,
             headless: config.headless,
             ignoreHTTPSErrors: true,
